@@ -97,3 +97,9 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+.image {
+  width: 50px;
+  border: 1px solid royalblue;
+  border-radius: 50%;
+}

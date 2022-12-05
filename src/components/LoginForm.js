@@ -1,32 +1,51 @@
 import { useForm, Controller } from "react-hook-form";
-import { useState, useContext } from "react";
+import { useState ,useContext } from "react";
+import AuthContext from "../context/auth/AuthContext";
+
 import TextField from '@mui/material/TextField';
 import { Button } from "@mui/material";
+import { Modal } from '@mui/material';
+import Box from '@mui/material/Box';
 
-import AuthContext from "../context/auth/AuthContext";
 
 const LoginForm = () => {
 
     const {loginUser} = useContext(AuthContext);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const {isLoggedIn ,logOutUser} = useContext(AuthContext);
 
-    const handleChanchUser = ({target: {value}}) => {
-        setUsername(value);
-    }
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleChanchPassword = ({target: {value}}) => {
-        setPassword(value)
-    }
-
-    const {handleSubmit, control, register, formState: {errors},} = useForm();
+    const {handleSubmit, control, register,} = useForm();
 
     const onSubmit = (data) => {
-        loginUser({username, password});
+        loginUser(data);
+        handleClose();
     }
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 500,
+        bgcolor: 'background.paper',
+        border: '1px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
+
     return (
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+    <>
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+            <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <Controller 
             control={control} 
             name='username'
@@ -34,7 +53,6 @@ const LoginForm = () => {
             render={({field, fieldState: {error}}) => {
                 return <TextField
                 {...field}
-                value={username}
                 id="outlined-basic" 
                 label="Username" 
                 autoComplete="username"
@@ -44,37 +62,38 @@ const LoginForm = () => {
                 error={!!error?.username}
                 helperText={error?.message}
                 sx={{width: 488, mb: 6,}}
-                onChange={handleChanchUser}
                 />
-            }}
-            />
-            <Controller 
-            control={control} 
-            name='password'
-            defaultValue=''
-            render={({field, fieldState: {error}}) => {
-                return <TextField 
-                {...field} 
-                value={password}
-                id="outlined-basic" 
-                label="Password" 
-                variant="outlined" 
-                type='password'
-                error={!!error?.password}
-                helperText={error?.message}
-                sx={{width: 488, mb: 12,}}
-                onChange={handleChanchPassword}
+                }}
                 />
-            }}
-            />
-            <Button 
-            variant="contained" 
-            type='submit'
-            sx={{width: 488,}}
-            >
-                Login
-            </Button>
-        </form>
+                <Controller 
+                control={control} 
+                name='password'
+                defaultValue=''
+                render={({field, fieldState: {error}}) => {
+                    return <TextField 
+                    {...field}
+                    id="outlined-basic" 
+                    label="Password" 
+                    variant="outlined" 
+                    type='password'
+                    error={!!error?.password}
+                    helperText={error?.message}
+                    sx={{width: 488, mb: 12,}}
+                    />
+                }}
+                />
+                <Button
+                variant="contained" 
+                type='submit'
+                sx={{width: 488,}}
+                >
+                    Login
+                </Button>
+                </form>
+            </Box>
+        </Modal>
+        {isLoggedIn ? <Button type='button' onClick={logOutUser}>logOut</Button> : <Button onClick={handleOpen} type='button'>Login</Button>}
+    </>
     )
 }
 

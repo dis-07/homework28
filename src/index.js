@@ -9,7 +9,6 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import Users from './pages/Users';
 import User from './pages/User';
-import Login from './pages/Login';
 
 import './index.css';
 
@@ -33,7 +32,7 @@ const router = createBrowserRouter ([
       },
       {
         path: 'auth/login',
-        element: <Login/>,
+        // element: <Login/>,
       },
     ]
   }
