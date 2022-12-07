@@ -12,7 +12,7 @@ import User from './pages/User';
 
 import './index.css';
 
-const router = createBrowserRouter ([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
@@ -20,22 +20,21 @@ const router = createBrowserRouter ([
     children: [
       {
         path: '/',
-        element: <Home/>,
+        element: <Home />,
       },
       {
         path: 'users',
-        element: <Users/>,
+        element: <Users />,
       },
       {
         path: 'users/:userId',
-        element: <User/>,
+        element: <User />,
       },
       {
         path: 'auth/login',
-        // element: <Login/>,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -44,4 +43,3 @@ root.render(
     <RouterProvider router={router} />
   </AuthProvaider>
 );
-
